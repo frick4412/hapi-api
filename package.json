@@ -1,0 +1,21 @@
+{
+  "name": "hapi-api",
+  "version": "1.0.0",
+  "description": "test hapi server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Steven Crombie",
+  "license": "ISC",
+  "dependencies": {
+    "hapi": "^17.6.0",
+    "hapi-auth-jwt2": "^8.1.0",
+    "hapi-pino": "^5.1.0",
+    "inert": "^5.1.0",
+    "jsonwebtoken": "^8.3.0",
+    "mssql": "^4.2.1",
+    "mysql2": "^1.6.1",
+    "password_hash": "^1.1.0"
+  }
+}
