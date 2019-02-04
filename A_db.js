@@ -22,6 +22,9 @@ const poolPromise = new sql.ConnectionPool(dbconfig)
   .then(pool => {
     console.log('Connected to MSSQL')
     return pool
+  .on('error', err => {
+    return err;
+  })
   })
   .catch(err => console.log('Database Connection Failed! Bad Config: ', err))
 

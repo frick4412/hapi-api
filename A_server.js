@@ -13,6 +13,7 @@ const server = Hapi.server({
     }
 });
 
+/*  ---> See A_db.js
 const dbconfig = {
     user: 'scrombie',
     password: 'greenway',
@@ -29,6 +30,7 @@ const dbconfig = {
         encrypt: false
     }
 }
+*/
 
 const init = async () => {
     server.route(routes)

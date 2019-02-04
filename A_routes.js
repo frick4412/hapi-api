@@ -1,4 +1,4 @@
-const { poolPromise } = require('./A_db')
+const { sql, poolPromise } = require('./A_db')
 
 module.exports = [
     {
@@ -41,7 +41,7 @@ module.exports = [
             try {
                 const pool = await poolPromise
                 const result = await pool.request()
-                    .query('select * from users')
+                    .query("select * from users")
                 return result.recordset
             } 
             catch (err) {
@@ -52,46 +52,43 @@ module.exports = [
     {
         method: 'GET',
         path: '/bookandusers/{id}',
-        handler: (request, h) => {
-            var id = encodeURI(request.params.id)
-            var result = (async function () {
-                try {
-                    let result = await pool.request()
+        config: { auth: false },  // jwt auth override of default
+        handler: async (req, res) => {
+            try {
+                var id = encodeURI(req.params.id)
+                const pool = await poolPromise
+                const result = await pool.request()
                     .input("id", sql.Int, id)
                     .query("select * from books where Id = @id; select * from users")
-                    return result
-                } catch (err) {
-                    // ... error checks
-                    console.log('Error 5', err)
-                    return err
-                }
-            })();
-            return result;
-        }
-    }    
-]
-/*
-// simple query with parameter
-server.route({
-    method: 'GET',
-    path: '/book/{id}',
-    handler: (request, h) => {
-        var id = encodeURI(request.params.id)
-        var result = (async function () {
-            try {
-                let result = await pool.request()
-                .input("id", sql.Int, id)
-                .query("select * from books where Id = @id")
                 return result
-            } catch (err) {
-                // ... error checks
-                console.log('Error 3', err)
-                return err
+            } 
+            catch (err) {
+                console.log(err)
             }
-        })();
-        return result
-    }
-});
-*/
+        }
+    },
+    {
+        method: 'GET',
+        path: '/book1and2',
+        config: { auth: false },  // jwt auth override of default
+        handler: async (req, res) => {
+            try {
+                console.log("Querying...")
+                var id = encodeURI(req.params.id)
+                const pool = await poolPromise
+                const result1 = await pool.request()
+                    .query("select * from books where Id = 1")
+                console.log(result1.recordset[0].Title) // see terminal running A_server.js                   
+                const result2 = await pool.request()
+                    .query("select * from books where Id = 2")
+                console.log(result2.recordset[0].Title)                    
 
+                return {result1, result2}
+            } 
+            catch (err) {
+                console.log(err)
+            }
+        }
+    }
+]
 
